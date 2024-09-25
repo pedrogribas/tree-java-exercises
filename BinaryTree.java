@@ -164,30 +164,24 @@ public class BinaryTree {
      * 
      * @return a altura da árvore
      */
-    public int altura() {
-        return calculateHeight(root, 0);
+    public int height() {
+        return calculateHeight(root);
     }
 
     /**
      * Método auxiliar para calcular altura. Usa recursividade
      * 
-     * @param atual  a palavra que está percorrendo
-     * @param altura encontrada até então
+     * @param atual a palavra que está percorrendo
      * @return a altura final
      */
-    private int calculateHeight(Node current, int height) {
-        if (current == null) {
-            return height; // Se o nó for null, retorna a altura acumulada
-        }
-        // se o nó atual é uma folha
-        if (current.getLeft() == null && current.getRight() == null) {
-            return height + 1;
+    private int calculateHeight(Node root) {
+        if (root == null) {
+            return 0; // Se o nó for null, retorna 0
         }
         // Recursão para os filhos esquerda e direita
-        int leftHeight = calculateHeight(current.getLeft(), height + 1);
-        int rightHeight = calculateHeight(current.getRight(), height + 1);
+        int leftHeight = calculateHeight(root.getLeft()) + (root.getLeft() == null ? 0 : 1);
+        int rightHeight = calculateHeight(root.getRight()) + (root.getLeft() == null ? 0 : 1);
         // Retorna a maior altura entre as subárvores esquerda e direita
         return Math.max(leftHeight, rightHeight);
     }
-
 }
