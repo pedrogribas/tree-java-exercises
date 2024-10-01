@@ -2,10 +2,13 @@ public class Node {
     private int value;
     private Node left;
     private Node right;
-    public Node(int value){
-        right = null;
-        left = null;
+    private Node next;  // Para uso na pilha
+
+    public Node(int value) {
         this.value = value;
+        this.left = null;
+        this.right = null;
+        this.next = null; 
     }
 
     public int getValue() {
@@ -30,5 +33,13 @@ public class Node {
 
     public void setRight(Node right) {
         this.right = right;
+    }
+
+    public Node getNext() {
+        return next;
+    }
+
+    public void setNext(Node next) {
+        this.next = next;
     }
 }

@@ -1,10 +1,17 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
         BinaryTree tree = new BinaryTree();
+
+        tree.insert(new Node(10));
+        tree.insert(new Node(5));
+        tree.insert(new Node(15));
+        tree.insert(new Node(3));
+        tree.insert(new Node(7));
+        tree.insert(new Node(12));
+        tree.insert(new Node(18));
+        tree.preOrder();
+        tree.postOrder();
+        tree.questao7();
+
     }
 }

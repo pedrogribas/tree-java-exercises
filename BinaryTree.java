@@ -1,4 +1,4 @@
-import java.util.*;
+
 /**
  * Uma classe para representar uma árvore binária.
  */
@@ -73,7 +73,46 @@ public class BinaryTree {
         if (current.getLeft() != null && current.getLeft().getValue() == value) {
             return current;
         }
-        return searchDad(current.getLeft(), value); // aqui sempre o getValue vai ser > que o value 
+        return searchDad(current.getLeft(), value); // aqui sempre o getValue vai ser > que o value
+    }
+
+    private void preOrderRecursive(Node p) {
+        if (p != null) {
+            System.out.println(p.getValue());
+            preOrderRecursive(p.getLeft());
+            preOrderRecursive(p.getRight());
+        }
+    }
+
+    private void inOrderRecursive(Node p) {
+        if (p != null) {
+            inOrderRecursive(p.getLeft());
+            System.out.println(p.getValue());
+            inOrderRecursive(p.getRight());
+        }
+    }
+
+    private void postOrderRecursive(Node p) {
+        if (p != null) {
+            postOrderRecursive(p.getLeft());
+            postOrderRecursive(p.getRight());
+            System.out.println(p.getValue());
+        }
+    }
+
+    public void postOrder() {
+        System.out.println("Pós Ordem:");
+        postOrderRecursive(root);
+    }
+
+    public void preOrder() {
+        System.out.println("Pré Ordem:");
+        preOrderRecursive(root);
+    };
+
+    public void inOrder() {
+        System.out.println("Em Ordem:");
+        inOrderRecursive(root);
     }
 
     public boolean remove(int value) {
@@ -92,9 +131,10 @@ public class BinaryTree {
                 root = root.getLeft();
             } else { // Caso com dois filhos
                 Node noDadRightLeft = farLeft(root, root.getRight());
-                Node substite = noDadRightLeft.getRight();
+                Node substite = noDadRightLeft.getLeft();
+                noDadRightLeft.setLeft(substite.getRight());
                 substite.setLeft(root.getLeft());
-                noDadRightLeft.setLeft(null);
+                substite.setRight(root.getRight());
                 root = substite; // Substitui a raiz pela substituta
             }
             return true; // A raiz foi removida
@@ -150,6 +190,7 @@ public class BinaryTree {
 
         return true;
     }
+
     // QUESTAO 1
 
     private int nodeCounter(Node current) {
@@ -194,21 +235,10 @@ public class BinaryTree {
     }
 
     // QUESTAO 4
-    /**
-     * Método para calcular altura na árvore.
-     * 
-     * @return a altura da árvore
-     */
     public int height() {
         return calculateHeight(root);
     }
 
-    /**
-     * Método auxiliar para calcular altura. Usa recursividade
-     * 
-     * @param atual a palavra que está percorrendo
-     * @return a altura final
-     */
     private int calculateHeight(Node root) {
         if (root == null) {
             return 0; // Se o nó for null, retorna 0
@@ -220,7 +250,7 @@ public class BinaryTree {
         return Math.max(leftHeight, rightHeight);
     }
 
-    //QUESTAO 5
+    // QUESTAO 5
     private void removePairAux(Node current) {
         if (current == null) {
             return;
@@ -236,8 +266,8 @@ public class BinaryTree {
         return true;
     }
 
-    //QUESTAO 6
-    private void invertTreeAux(Node current){
+    // QUESTAO 6
+    private void invertTreeAux(Node current) {
         if (current == null) {
             return;
         }
@@ -247,48 +277,69 @@ public class BinaryTree {
         invertTreeAux(current.getLeft());
         invertTreeAux(current.getRight());
     }
-    public void invertTree(){
+
+    public void invertTree() {
         invertTreeAux(root);
     }
 
-    //QUESTAO 7
-    public void treeWalker(){
-        if(root==null){return;} 
-        //EM ORDEM
-        Node currentInOrder = root;
-        Stack inOrder = new Stack();
-        while (currentInOrder!=null|| !inOrder.empty()) {
-            inOrder.push(new Cell(currentInOrder.getValue()));
-            currentInOrder = currentInOrder.getLeft();
-        }        
-        // Agora o nó mais à esquerda está no topo da pilha
-        if (!inOrder.empty()) {
-            Cell cell = inOrder.pop(); // Desempilha o nó
-            System.out.print(cell.getValue() + " "); // Visita o nó
-            // Move para a subárvore direita
-            currentInOrder = currentInOrder.getRight();
-        }
-        //PRE-ORDEM
-        Node currentPreOrder = root;
-        Stack preOrder = new Stack();
-        preOrder.push(new Cell(currentPreOrder.getValue()));
-        while (!preOrder.empty()) {
-            Cell cell = preOrder.pop(); // Desempilha o nó
-            System.out.print(cell.getValue() + " "); // Visita o nó
-            
-            // Empilha o filho direito primeiro para que o filho esquerdo seja processado primeiro
-            if (currentPreOrder.getRight() != null) {
-                Node aux = currentPreOrder;
-                while (currentPreOrder.getLeft()!=null) {
-                    
-                }
-                stack.push(new Cell(cell.getNode().getRight()));
-            }
-            if (cell.getNode().getLeft() != null) {
-                stack.push(new Cell(cell.getNode().getLeft()));
+    // QUESTAO 7
+    public void inOrderTraversal(Node root) {
+        Stack stack = new Stack();
+        Node p = root;
+        while (p != null || !stack.empty()) {
+            if (p != null) {
+                stack.push(p);
+                p = p.getLeft();
+            } else {
+                p = stack.pop();
+                System.out.println(p.getValue());
+                p = p.getRight();
             }
         }
-    
+    }
 
+    public void preOrderTraversal(Node root) {
+        Stack stack = new Stack();
+        Node p = root;
+
+        while (p != null || !stack.empty()) {
+            if (p != null) {
+                System.out.println(p.getValue());
+                stack.push(p);
+                p = p.getLeft();
+            } else {
+                p = stack.pop();
+                p = p.getRight();
+            }
+        }
+    }
+
+    public void postOrderTraversal(Node root) {
+        Stack stack = new Stack();
+        Node p = root;
+        Node lastVisited = null;
+        while (p != null || !stack.empty()) {
+            if (p != null) {
+                stack.push(p);
+                p = p.getLeft();
+            } else {
+                Node peekNode = stack.getTop();
+                if (peekNode.getRight() != null && lastVisited != peekNode.getRight()) {
+                    p = peekNode.getRight();
+                } else {
+                    System.out.println(peekNode.getValue());
+                    lastVisited = stack.pop();
+                }
+            }
+        }
+    }
+
+    public void questao7() {
+        System.out.println("Em-Ordem Sem Recursão:");
+        inOrderTraversal(root);
+        System.out.println("Pré-Ordem Sem Recursão:");
+        preOrderTraversal(root);
+        System.out.println("Pós-Ordem Sem Recursão:");
+        postOrderTraversal(root);
     }
 }

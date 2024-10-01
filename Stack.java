@@ -1,5 +1,5 @@
 public class Stack {
-    private Cell top;
+    private Node top;
     private int quant;
 
     public Stack() {
@@ -7,56 +7,48 @@ public class Stack {
         this.quant = 0;
     }
 
-    public Cell getTop() {
+    public Node getTop() {
         return top;
-    }
-
-    public void setTop(Cell top) {
-        this.top = top;
     }
 
     public int getQuant() {
         return quant;
     }
 
-    public void setQuant(int quant) {
-        this.quant += quant;
-    }
-
     public boolean empty() {
         return top == null;
     }
 
-    public void push(Cell c) {
+    public void push(Node c) {
         c.setNext(top);
-        setTop(c);
-        setQuant(1);
+        top = c;
+        quant++;
     }
 
-    public Cell pop() {
+    public Node pop() {
         if (empty()) {
             return null;
         } else {
-            Cell aux = top;
+            Node aux = top;
             top = top.getNext();
             aux.setNext(null);
-            setQuant(-1);
+            quant--;
             return aux;
         }
     }
 
     public void clear() {
-        setTop(null);
+        top = null;
+        quant = 0;
     }
 
     public void print() {
         if (!empty()) {
-            Cell aux = top;
+            Node aux = top;
             while (aux != null) {
                 System.out.println(aux.getValue());
                 aux = aux.getNext();
             }
         }
     }
-
 }
